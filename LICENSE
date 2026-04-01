@@ -1,0 +1,39 @@
+Pixel Studio License
+
+Copyright (c) 2026 Emir Yaman Sivrikaya
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to use,
+copy, modify, and distribute the Software for personal, educational, and
+non-commercial purposes, subject to the following conditions:
+
+1. ATTRIBUTION REQUIRED
+   All copies, forks, derivatives, or projects using this Software must
+   include visible credit to the original author:
+   "Built with Pixel Studio by Emir Yaman Sivrikaya (https://github.com/EYamanS/pixel-studio)"
+   This credit must appear in the project's README, about page, or equivalent.
+
+2. COMMERCIAL USE RESTRICTED
+   Using this Software (or any derivative) to generate revenue — including but
+   not limited to selling it as a product, offering it as a paid service,
+   embedding it in a commercial product, or using it to produce assets for
+   sale — requires prior written permission from the copyright holder.
+   Contact: github.com/EYamanS
+
+3. NO RESALE
+   You may not sell, sublicense, or redistribute this Software as a standalone
+   product, whether modified or unmodified, without written permission.
+
+4. MODIFICATIONS
+   You may modify the Software for personal or non-commercial use. Modified
+   versions must retain this license and the attribution requirement.
+
+5. ARTWORK GENERATED
+   Assets (sprites, images, tilesets) generated using this Software are owned
+   by the person who generated them. No claim is made on generated output.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM
+THE USE OF THIS SOFTWARE.
