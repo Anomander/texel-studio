@@ -687,6 +687,37 @@ async def generate_reference(data: ReferenceRequest):
         print(f"[REFERENCE ERROR]\n{tb}")
         return JSONResponse({"error": f"{str(e)}\n\n{tb}"}, status_code=500)
 
+@app.post("/api/reference/upload")
+async def upload_reference(request: Request):
+    """Upload a local image as reference."""
+    from fastapi import UploadFile
+    content_type = request.headers.get("content-type", "")
+
+    if "multipart/form-data" in content_type:
+        form = await request.form()
+        file = form.get("file")
+        if not file:
+            raise HTTPException(400, "No file uploaded")
+        data = await file.read()
+    else:
+        data = await request.body()
+
+    if not data:
+        raise HTTPException(400, "Empty file")
+
+    ref_id = f"ref_{int(time.time())}_{hash(data) & 0xFFFF:04x}.png"
+
+    # Convert to PNG if needed
+    try:
+        img = Image.open(io.BytesIO(data))
+        img.save(REFS_DIR / ref_id, "PNG")
+    except Exception:
+        # Save raw if it's already a valid image format
+        with open(REFS_DIR / ref_id, "wb") as f:
+            f.write(data)
+
+    return {"reference_id": ref_id}
+
 @app.get("/api/reference/{ref_id}")
 def serve_reference(ref_id: str):
     path = REFS_DIR / ref_id

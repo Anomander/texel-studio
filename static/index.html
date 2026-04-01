@@ -162,7 +162,11 @@
       <label>Concept Art Model</label>
       <select id="ref-model"></select>
     </div>
-    <button class="secondary" id="ref-gen-btn" onclick="generateReference()">Generate Concept Art</button>
+    <div style="display:flex;gap:4px">
+      <button class="secondary" id="ref-gen-btn" onclick="generateReference()" style="flex:1">Generate</button>
+      <button class="secondary" onclick="document.getElementById('ref-upload').click()" style="flex:1">Upload</button>
+      <input type="file" id="ref-upload" accept="image/*" style="display:none" onchange="uploadReference(this)">
+    </div>
     <div class="ref-container" id="ref-container" style="display:none">
       <img id="ref-img" src="" alt="Reference">
       <div class="ref-actions">
@@ -787,6 +791,34 @@ async function reviseReference() {
     status.textContent = `Error: ${e.message}`;
   }
   btn.disabled = false;
+}
+
+async function uploadReference(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const container = document.getElementById('ref-container');
+  const status = document.getElementById('ref-status');
+
+  container.style.display = 'block';
+  status.className = 'status generating';
+  status.textContent = 'Uploading...';
+  refConfirmed = false;
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('/api/reference/upload', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (!res.ok || data.error) throw new Error(data.error || `HTTP ${res.status}`);
+    currentRefId = data.reference_id;
+    document.getElementById('ref-img').src = `/api/reference/${currentRefId}`;
+    status.className = 'status complete';
+    status.textContent = 'Uploaded. Confirm to use as reference.';
+  } catch (e) {
+    status.className = 'status error';
+    status.textContent = e.message;
+  }
+  input.value = ''; // reset file input
 }
 
 function clearReference() {
