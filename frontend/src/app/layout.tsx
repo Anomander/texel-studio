@@ -9,7 +9,7 @@ const fira = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Pixel Studio",
+  title: "Texel Studio",
   description: "AI pixel art agent",
 };
 

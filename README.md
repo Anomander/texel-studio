@@ -1,10 +1,10 @@
-# Pixel Studio
+# Texel Studio
 
 **The only pixel art tool that actually paints like a real artist.**
 
 Every other AI pixel art generator is a diffusion model pretending to understand pixels. They output blurry approximations — inconsistent colors, broken edges, half-pixel artifacts, and results that look different every time you run the same prompt. They don't understand what a pixel *is*.
 
-Pixel Studio is different. An AI agent picks up a brush, places pixels on a canvas one at a time, steps back to look at what it drew, and decides what to fix. It uses shapes, noise fills, and detail tools — the same way a human pixel artist works. Every pixel is intentional. Every color is from your palette. The output is exact, consistent, and game-ready.
+Texel Studio is different. An AI agent picks up a brush, places pixels on a canvas one at a time, steps back to look at what it drew, and decides what to fix. It uses shapes, noise fills, and detail tools — the same way a human pixel artist works. Every pixel is intentional. Every color is from your palette. The output is exact, consistent, and game-ready.
 
 Built with LangGraph + Gemini/OpenAI. Runs locally with a web UI.
 
@@ -22,7 +22,7 @@ https://github.com/user-attachments/assets/bc2c0e85-062a-4f5e-ac7c-b8c0d91fe63d
 
 ## Why not diffusion?
 
-| | Diffusion generators | **Pixel Studio** |
+| | Diffusion generators | **Texel Studio** |
 |---|---|---|
 | Output | Blurry approximation scaled down | **Exact palette-indexed pixels** |
 | Colors | Random, needs post-processing | **Your palette, every time** |
@@ -68,8 +68,8 @@ Diffusion models hallucinate pixels. This tool places them.
 ## Setup
 
 ```bash
-git clone https://github.com/EYamanS/pixel-studio.git
-cd pixel-studio
+git clone https://github.com/EYamanS/texel-studio.git
+cd texel-studio
 
 # Backend
 python3 -m venv venv
@@ -113,6 +113,10 @@ After generating a block sprite, click "Generate Tileset" to create all 16 autot
 - Rounded corners where two exposed edges meet
 
 Output: `BlockName_00.png` through `BlockName_15.png`
+
+## Cloud Version
+
+A hosted version with authentication, credit-based billing, and a shared gallery is available at [texel.studio](https://texel.studio).
 
 ## Tech Stack
 

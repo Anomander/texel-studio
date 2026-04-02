@@ -1,5 +1,5 @@
 """
-Pixel Studio Agent — LangGraph-based pixel art agent with canvas tools.
+Texel Studio Agent — LangGraph-based pixel art agent with canvas tools.
 
 The agent gets a canvas, a palette, and tools to draw on it.
 It thinks between each action, building up the sprite incrementally.

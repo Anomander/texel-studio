@@ -79,7 +79,7 @@ export function ControlPanel({ studio }: { studio: any }) {
       {/* Header */}
       <div className="px-3.5 py-3 flex items-center gap-2" style={{ borderBottom: "1px solid var(--border)" }}>
         <div style={{ width: 6, height: 6, background: "var(--accent)", transform: "rotate(45deg)" }} />
-        <span style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.05em" }}>PIXEL STUDIO</span>
+        <span style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.05em" }}>TEXEL STUDIO</span>
       </div>
 
       <div className="flex-1 overflow-y-auto">

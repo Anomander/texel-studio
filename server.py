@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Pixel Studio — AI-powered pixel art generator with agent-based painting.
+Texel Studio — AI-powered pixel art generator with agent-based painting.
 
 Generates sprites as palette-indexed 2D arrays via Gemini,
 constructs images, and iterates through visual feedback loops.
@@ -552,7 +552,7 @@ def _run_agent_sse(generation_id: int, message: str, is_continuation: bool = Fal
 
 # ── FastAPI ──
 
-app = FastAPI(title="Pixel Studio")
+app = FastAPI(title="Texel Studio")
 
 from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
