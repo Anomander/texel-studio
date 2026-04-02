@@ -430,7 +430,7 @@ Think carefully about each pixel. This is {size}x{size} — every pixel matters.
 def sse_event(event: str, data: dict) -> str:
     return f"event: {event}\ndata: {json.dumps(data)}\n\n"
 
-def _run_agent_sse(generation_id: int, message: str, is_continuation: bool = False):
+def _run_agent_sse(generation_id: int, message: str, is_continuation: bool = False, colors: list[str] | None = None):
     """Shared SSE generator for initial generation and chat continuation."""
     import threading
     import queue as queue_mod
@@ -442,8 +442,13 @@ def _run_agent_sse(generation_id: int, message: str, is_continuation: bool = Fal
         yield sse_event("error", {"message": "Generation not found"})
         return
 
-    palette_row = db.execute("SELECT colors FROM palettes WHERE id = ?", (gen["palette_id"],)).fetchone()
-    palette = json.loads(palette_row["colors"])
+    if colors:
+        palette = colors
+    elif gen["palette_id"]:
+        palette_row = db.execute("SELECT colors FROM palettes WHERE id = ?", (gen["palette_id"],)).fetchone()
+        palette = json.loads(palette_row["colors"]) if palette_row else ["#c8a44e"]
+    else:
+        palette = ["#c8a44e"]
     size = gen["size"]
     model = gen["model"] or DEFAULT_MODEL
     sprite_type = gen["sprite_type"] or "block"
@@ -599,7 +604,8 @@ class ReferenceRequest(BaseModel):
 
 class GenerateRequest(BaseModel):
     prompt: str
-    palette_id: int
+    palette_id: Optional[int] = None
+    colors: Optional[list[str]] = None  # Pass colors directly (cloud mode)
     size: int = 16
     system_prompt: Optional[str] = None
     model: Optional[str] = None
@@ -823,7 +829,7 @@ async def start_generation(data: GenerateRequest):
     # Reference image is optional
 
     return StreamingResponse(
-        _run_agent_sse(gen_id, data.prompt),
+        _run_agent_sse(gen_id, data.prompt, colors=data.colors),
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
