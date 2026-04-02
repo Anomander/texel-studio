@@ -455,11 +455,17 @@ def get_redis():
         _redis = _redis_mod.from_url(REDIS_URL, decode_responses=True)
     return _redis
 
-def _sse_from_redis(job_id: str):
-    """Subscribe to a Redis pub/sub channel and yield SSE events."""
+def _subscribe_redis(job_id: str):
+    """Create a pub/sub subscription BEFORE pushing the job. Returns the pubsub object."""
     import redis as _redis_mod
     sub = _redis_mod.from_url(REDIS_URL, decode_responses=True).pubsub()
     sub.subscribe(f"texel:events:{job_id}")
+    # Consume the subscribe confirmation message
+    sub.get_message(timeout=1)
+    return sub
+
+def _sse_from_pubsub(sub):
+    """Yield SSE events from an already-subscribed pub/sub."""
     try:
         for msg in sub.listen():
             if msg["type"] != "message":
@@ -472,11 +478,16 @@ def _sse_from_redis(job_id: str):
         sub.unsubscribe()
         sub.close()
 
-def _wait_for_redis_result(job_id: str, timeout: int = 120):
-    """Subscribe to a Redis result channel and wait for a single response."""
+def _subscribe_result(job_id: str):
+    """Subscribe to a result channel BEFORE pushing the job."""
     import redis as _redis_mod
     sub = _redis_mod.from_url(REDIS_URL, decode_responses=True).pubsub()
     sub.subscribe(f"texel:result:{job_id}")
+    sub.get_message(timeout=1)
+    return sub
+
+def _wait_for_result(sub):
+    """Wait for a single result from an already-subscribed pub/sub."""
     try:
         for msg in sub.listen():
             if msg["type"] != "message":
@@ -716,6 +727,7 @@ async def generate_reference(data: ReferenceRequest):
     if rd:
         import uuid as _uuid
         job_id = str(_uuid.uuid4())
+        sub = _subscribe_result(job_id)
         rd.lpush("texel:jobs", json.dumps({
             "type": "reference",
             "job_id": job_id,
@@ -724,7 +736,7 @@ async def generate_reference(data: ReferenceRequest):
             "model": data.model,
             "sprite_type": data.sprite_type,
         }))
-        result = _wait_for_redis_result(job_id)
+        result = _wait_for_result(sub)
         if "error" in result:
             return JSONResponse(result, status_code=500)
         return result
@@ -892,6 +904,8 @@ async def start_generation(data: GenerateRequest):
     if rd:
         import uuid as _uuid
         job_id = str(_uuid.uuid4())
+        # Subscribe BEFORE pushing job to avoid race condition
+        sub = _subscribe_redis(job_id)
         rd.lpush("texel:jobs", json.dumps({
             "type": "generate",
             "job_id": job_id,
@@ -906,7 +920,7 @@ async def start_generation(data: GenerateRequest):
             "is_continuation": False,
         }))
         return StreamingResponse(
-            _sse_from_redis(job_id),
+            _sse_from_pubsub(sub),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
@@ -984,6 +998,7 @@ async def chat_with_agent(data: ChatRequest):
         colors = json.loads(gen["colors"]) if gen["colors"] else ["#c8a44e"]
 
         pixel_data = json.loads(gen["pixel_data"]) if gen["pixel_data"] else None
+        sub = _subscribe_redis(job_id)
         rd.lpush(queue_name, json.dumps({
             "type": "chat",
             "job_id": job_id,
@@ -998,7 +1013,7 @@ async def chat_with_agent(data: ChatRequest):
             "is_continuation": True,
         }))
         return StreamingResponse(
-            _sse_from_redis(job_id),
+            _sse_from_pubsub(sub),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
