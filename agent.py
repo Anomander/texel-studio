@@ -20,6 +20,29 @@ from langgraph.checkpoint.memory import MemorySaver
 
 import os
 
+# ── PostHog LLM Analytics (optional) ──
+
+_posthog_client = None
+
+def _get_posthog_callback(distinct_id: str | None = None, trace_id: str | None = None):
+    """Returns a PostHog CallbackHandler if POSTHOG_API_KEY is set, else None."""
+    global _posthog_client
+    api_key = os.getenv("POSTHOG_API_KEY")
+    if not api_key:
+        return None
+    try:
+        if _posthog_client is None:
+            from posthog import Posthog
+            _posthog_client = Posthog(api_key, host=os.getenv("POSTHOG_HOST", "https://us.i.posthog.com"))
+        from posthog.ai.langchain import CallbackHandler
+        return CallbackHandler(
+            client=_posthog_client,
+            distinct_id=distinct_id or "anonymous",
+            trace_id=trace_id,
+        )
+    except Exception:
+        return None
+
 
 # ── Canvas State ──
 
@@ -562,6 +585,11 @@ Use the canvas tools to make the requested changes. Call finish when done."""
         input_message = HumanMessage(content=follow_up)
 
     config = {"configurable": {"thread_id": thread_id}}
+
+    # Add PostHog callback if configured
+    ph_callback = _get_posthog_callback(distinct_id=str(gen_id), trace_id=f"gen_{gen_id}")
+    if ph_callback:
+        config["callbacks"] = [ph_callback]
 
     step_count = 0
     finished = False
