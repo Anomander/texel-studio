@@ -1,39 +1,44 @@
-Pixel Studio License
+Texel Studio License
 
 Copyright (c) 2026 Emir Yaman Sivrikaya
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to use,
-copy, modify, and distribute the Software for personal, educational, and
-non-commercial purposes, subject to the following conditions:
+copy, modify, merge, publish, and distribute the Software, subject to the
+following conditions:
 
-1. ATTRIBUTION REQUIRED
-   All copies, forks, derivatives, or projects using this Software must
-   include visible credit to the original author:
-   "Built with Pixel Studio by Emir Yaman Sivrikaya (https://github.com/EYamanS/pixel-studio)"
-   This credit must appear in the project's README, about page, or equivalent.
+1. GENERATED OUTPUT
+   All assets generated using this Software (sprites, images, tilesets, pixel
+   art, etc.) are fully owned by the person who generated them. You may use
+   generated assets for any purpose — personal, commercial, in games, in
+   products, for sale, or otherwise — without restriction or attribution.
 
-2. COMMERCIAL USE RESTRICTED
-   Using this Software (or any derivative) to generate revenue — including but
-   not limited to selling it as a product, offering it as a paid service,
-   embedding it in a commercial product, or using it to produce assets for
-   sale — requires prior written permission from the copyright holder.
-   Contact: github.com/EYamanS
+2. SOFTWARE USE
+   You may freely use, modify, and self-host this Software for any purpose,
+   including commercial projects. For example:
+   - Using it internally at a game studio to generate assets
+   - Integrating it into your game development pipeline
+   - Modifying it for your own needs
+   - Running it on your own servers for your team
 
-3. NO RESALE
-   You may not sell, sublicense, or redistribute this Software as a standalone
-   product, whether modified or unmodified, without written permission.
+3. SERVICE RESTRICTION
+   You may NOT offer this Software, or any substantial derivative of it, as
+   a hosted service, API, or SaaS product that competes with texel.studio.
+   Specifically, you may not:
+   - Host it publicly and charge users for access
+   - Offer it as a managed pixel art generation service
+   - Wrap it in an API and sell access to third parties
 
-4. MODIFICATIONS
-   You may modify the Software for personal or non-commercial use. Modified
-   versions must retain this license and the attribution requirement.
+   Self-hosting for your own use or your organization's internal use is
+   always permitted regardless of this clause.
 
-5. ARTWORK GENERATED
-   Assets (sprites, images, tilesets) generated using this Software are owned
-   by the person who generated them. No claim is made on generated output.
+4. ATTRIBUTION
+   If you redistribute the Software or a derivative, include a link to the
+   original repository: https://github.com/EYamanS/texel-studio
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM
-THE USE OF THIS SOFTWARE.
+5. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM
+   THE USE OF THIS SOFTWARE.

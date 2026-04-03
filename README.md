@@ -185,7 +185,7 @@ The cloud runs this same engine on Railway with Redis workers, Supabase for auth
 
 ## License
 
-Custom license — free for personal and non-commercial use with attribution required. Commercial use needs permission. See [LICENSE](LICENSE).
+Source-available. Use it freely — self-host, modify, use commercially, sell anything you generate. The only restriction: don't host it as a competing SaaS. See [LICENSE](LICENSE).
 
 ---
 
