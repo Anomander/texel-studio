@@ -8,7 +8,8 @@ Texel Studio is different. An AI agent picks up a brush, places pixels on a canv
 
 This is the open-source engine that powers [texel.studio](https://texel.studio).
 
-https://github.com/user-attachments/assets/bc2c0e85-062a-4f5e-ac7c-b8c0d91fe63d
+https://github.com/user-attachments/assets/63e2fdde-3f15-4ffd-8b27-60acaef9a9c5
+
 
 ## How it works
 
