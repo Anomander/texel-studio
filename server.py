@@ -90,7 +90,19 @@ def get_client():
     if api_key:
         return genai.Client(api_key=api_key)
 
-    # Try service account — resolve path relative to sprite-forge dir
+    # Try service account JSON content as env var (for Railway/Docker where you can't upload files)
+    sa_content = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT")
+    if sa_content:
+        import tempfile
+        import json as _json
+        sa_data = _json.loads(sa_content)
+        tmp = Path(tempfile.gettempdir()) / "service-account.json"
+        tmp.write_text(sa_content)
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(tmp)
+        location = os.getenv("GOOGLE_CLOUD_LOCATION", "global")
+        return genai.Client(vertexai=True, project=sa_data.get("project_id", ""), location=location)
+
+    # Try service account file path
     sa_path = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
     if sa_path:
         candidates = [
@@ -107,7 +119,7 @@ def get_client():
                 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(p.resolve())
                 return genai.Client(vertexai=True, project=project_id, location=location)
 
-    raise RuntimeError("No Gemini credentials found. Needs GEMINI_API_KEY or service-account.json")
+    raise RuntimeError("No Gemini credentials found. Set GEMINI_API_KEY, GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT, or GOOGLE_SERVICE_ACCOUNT_JSON")
 
 client = None
 
