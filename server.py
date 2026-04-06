@@ -71,7 +71,9 @@ OPENAI_MODELS = [
     "gpt-4.1-2025-04-14",
     "gpt-4o-mini",
 ]
-ALL_MODELS = GEMINI_MODELS + OPENAI_MODELS
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+OLLAMA_MODELS = [m.strip() for m in os.getenv("OLLAMA_MODELS", "").split(",") if m.strip()]
+ALL_MODELS = GEMINI_MODELS + OPENAI_MODELS + OLLAMA_MODELS
 DEFAULT_MODEL = "gemini-3-flash-preview"
 IMAGE_GEN_MODELS = [
     "gemini-3.1-flash-image-preview",

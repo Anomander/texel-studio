@@ -424,7 +424,21 @@ def make_tools(canvas: Canvas):
 
 OPENAI_MODEL_PREFIXES = ("gpt-", "o1-", "o3-")
 
+# Ollama config
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+OLLAMA_MODELS = set(m.strip() for m in os.getenv("OLLAMA_MODELS", "").split(",") if m.strip())
+
 def _get_llm(model_name: str, temperature: float = 0.7):
+    # Ollama models (OpenAI-compatible API)
+    if model_name in OLLAMA_MODELS:
+        from langchain_openai import ChatOpenAI
+        return ChatOpenAI(
+            model=model_name,
+            temperature=temperature,
+            base_url=f"{OLLAMA_URL}/v1",
+            api_key="ollama",
+        )
+
     # OpenAI models
     if model_name.startswith(OPENAI_MODEL_PREFIXES):
         from langchain_openai import ChatOpenAI

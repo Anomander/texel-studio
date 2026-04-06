@@ -55,7 +55,7 @@ Diffusion models hallucinate pixels. This tool places them.
 ## Features
 
 - **Sprite types** — Block (tileable) and Item Icon (transparent bg) with type-specific prompts
-- **Multi-provider** — Gemini (API key or Vertex AI) and OpenAI models
+- **Multi-provider** — Gemini, OpenAI, and local Ollama models (100% free with Ollama)
 - **Concept art reference** — AI generates a reference image before pixel painting
 - **Live streaming** — watch the sprite build in real-time via SSE
 - **Chat continuation** — send follow-up edits to the same agent session
@@ -91,6 +91,20 @@ Open `http://localhost:8500`
 
 You need at least one AI provider configured:
 
+**Ollama (free, runs locally)**
+- Install [Ollama](https://ollama.com) and pull a model:
+  ```bash
+  ollama pull ggml-org/gemma-4-E4B-it-GGUF:Q8_0
+  ```
+- Add to `.env`:
+  ```bash
+  OLLAMA_MODELS=ggml-org/gemma-4-E4B-it-GGUF:Q8_0
+  # OLLAMA_URL=http://localhost:11434   # default, only set if different
+  ```
+- That's it — no API keys, no accounts, no cost. The model runs on your machine.
+- You can list multiple models: `OLLAMA_MODELS=gemma-4:8b,llama3.1:8b,qwen3:8b`
+- Recommended models for pixel art: `ggml-org/gemma-4-E4B-it-GGUF:Q8_0`, `qwen3:8b`, `llama3.1:8b`
+
 **Gemini** (for both concept art + agent painting)
 - Get a free API key at [aistudio.google.com](https://aistudio.google.com/apikey)
 - Add `GEMINI_API_KEY=your_key` to `.env`
@@ -99,7 +113,9 @@ You need at least one AI provider configured:
 **OpenAI** (agent painting only, concept art still uses Gemini)
 - Add `OPENAI_API_KEY=your_key` to `.env`
 
-Both can be configured simultaneously — choose the model per generation in the UI.
+All providers can be configured simultaneously — choose the model per generation in the UI.
+
+> **Want to run 100% free?** Install Ollama, pull a model, set `OLLAMA_MODELS` in `.env`, and you're done. No API keys needed. Concept art generation requires Gemini, but you can skip it and paint directly.
 
 ## Autotile Export
 
@@ -178,7 +194,7 @@ The cloud runs this same engine on Railway with Redis workers, Supabase for auth
 ## Tech Stack
 
 - **Backend**: Python, FastAPI, LangGraph, LangChain
-- **AI**: Google Gemini + OpenAI (pluggable)
+- **AI**: Google Gemini + OpenAI + Ollama (pluggable, run free with local models)
 - **Frontend**: Next.js (static export to `static/`)
 - **Queue**: Redis (optional, for concurrent generations)
 - **Storage**: S3-compatible (optional, for multi-worker file sharing)
