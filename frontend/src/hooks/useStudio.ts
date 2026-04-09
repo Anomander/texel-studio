@@ -78,7 +78,7 @@ export function useStudio() {
 
   // ── Reference ──
   const generateReference = useCallback(async (prompt: string, model: string, spriteType: string) => {
-    const res = await fetch("http://localhost:8500/api/reference", {
+    const res = await fetch("/api/reference", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt, feedback: null, model, sprite_type: spriteType }),
@@ -103,7 +103,7 @@ export function useStudio() {
   const uploadReference = useCallback(async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
-    const res = await fetch("http://localhost:8500/api/reference/upload", { method: "POST", body: formData });
+    const res = await fetch("/api/reference/upload", { method: "POST", body: formData });
     const data = await res.json();
     if (!res.ok || data.error) throw new Error(data.error || `HTTP ${res.status}`);
     setReferenceId(data.reference_id);
@@ -139,7 +139,7 @@ export function useStudio() {
     abortRef.current = new AbortController();
 
     try {
-      const res = await fetch("http://localhost:8500/api/generate", {
+      const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         signal: abortRef.current.signal,
@@ -217,7 +217,7 @@ export function useStudio() {
     setStatus({ type: "generating", message: "Agent editing..." });
 
     try {
-      const res = await fetch("http://localhost:8500/api/chat", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ generation_id: activeGenId, message }),
