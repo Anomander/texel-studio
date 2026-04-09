@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.db
+output/
+references/
+.env
+service-account.json
+static/
+frontend/node_modules/
+frontend/.next/
+.git/
+.github/
